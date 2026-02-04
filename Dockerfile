@@ -1,13 +1,13 @@
-# Use Ubuntu 24.04 (Noble Numbat) as the base image
-FROM ubuntu:24.04
+# Use the Official Python 3.13 image (Debian-based, Lightweight & Stable)
+FROM python:3.13-slim-bookworm
 
-# Set environment variables to prevent interactive prompts
+# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
-# Update apt and install essential build tools and dependencies
+# Install essential system tools and build dependencies
+# We include 'build-essential' to ensure python modules compile correctly
 RUN apt-get update && apt-get install -y \
-    software-properties-common \
     git \
     wget \
     curl \
@@ -23,22 +23,9 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     libfreeimage-dev \
     locales \
-    && add-apt-repository ppa:deadsnakes/ppa -y \
-    && apt-get update \
-    && apt-get install -y \
-    python3.13 \
-    python3.13-dev \
-    python3.13-venv \
-    python3.13-distutils \
+    build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Set up Python 3.13 as the default 'python3' and 'python'
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1 \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python3.13 1
-
-# Install pip for Python 3.13
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.13
 
 # Install rclone (required for cloud uploads)
 RUN curl https://rclone.org/install.sh | bash
@@ -50,7 +37,8 @@ WORKDIR /app
 COPY . .
 
 # Install Python dependencies
-# Added uvloop and httpx explicitly to prevent previous import errors
+# 'pip' is already installed in this image.
+# We install uvloop and httpx explicitly to prevent the import errors you faced.
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install uvloop httpx
 
