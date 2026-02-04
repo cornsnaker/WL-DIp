@@ -28,4 +28,4 @@ pip3 install uvloop httpx
 
 # 4. Start the bot
 echo "Starting Bot..."
-python3 config.py && python3 update.py && python3 -m bot
+python3 update.py && python3 -m bot
