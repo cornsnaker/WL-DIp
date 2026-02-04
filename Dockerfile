@@ -5,6 +5,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
+# Update apt and install essential build tools and dependencies
 RUN apt-get update && apt-get install -y \
     software-properties-common \
     git \
@@ -45,11 +46,10 @@ RUN curl https://rclone.org/install.sh | bash
 # Set working directory
 WORKDIR /app
 
-# COPY local files instead of cloning a repo
+# COPY local files
 COPY . .
 
-# Install Python dependencies
-# Added uvloop and httpx explicitly to prevent the errors you saw earlier
+# Install Python dependencies (Ensuring uvloop and httpx are present)
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install uvloop httpx
 
