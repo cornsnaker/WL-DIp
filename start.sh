@@ -8,5 +8,4 @@ apt-get update
 apt-get install -y aria2 qbittorrent-nox
 
 # Activate virtual environment and run the app
-source .venv/bin/activate
 python3 update.py && python3 -m bot
