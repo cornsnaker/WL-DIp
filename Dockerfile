@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
 # Update apt and install essential build tools and dependencies
+# REMOVED: python3.13-distutils (It does not exist)
 RUN apt-get update && apt-get install -y \
     software-properties-common \
     git \
@@ -29,7 +30,6 @@ RUN apt-get update && apt-get install -y \
     python3.13 \
     python3.13-dev \
     python3.13-venv \
-    python3.13-distutils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -49,7 +49,8 @@ WORKDIR /app
 # COPY local files
 COPY . .
 
-# Install Python dependencies (Ensuring uvloop and httpx are present)
+# Install Python dependencies
+# Added uvloop and httpx explicitly to prevent previous import errors
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install uvloop httpx
 
