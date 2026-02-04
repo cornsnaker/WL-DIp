@@ -32,14 +32,15 @@ RUN curl https://rclone.org/install.sh | bash
 
 # Set working directory
 WORKDIR /app
-
+RUN uv venv --system-site-packages
 # COPY local files
 COPY . .
 
 # Install Python dependencies
 # 'pip' is already installed in this image.
 # We install uvloop and httpx explicitly to prevent the import errors you faced.
-RUN pip install --no-cache-dir -r requirements.txt && \
+COPY requirements.txt .
+RUN uv pip install --no-cache-dir -r requirements.txt && \
     pip install uvloop httpx
 
 # Ensure the start script is executable
