@@ -14,8 +14,6 @@ RUN apt-get update && apt-get install -y \
     pv \
     jq \
     ffmpeg \
-    aria2 \
-    qbittorrent-nox \
     p7zip-full \
     libcurl4-openssl-dev \
     libssl-dev \
